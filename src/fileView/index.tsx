@@ -1,11 +1,13 @@
 import { FC } from 'react';
+import { BsDownload, BsCircleFill } from "react-icons/bs";
 import { Table, ColumnConfig, ActionsConfig } from 'table';
 import { data, FileTableData } from 'fileView/api';
 
 const StatusCell = (props: { data: FileTableData }) => {
-  return <td>{props.data.status}</td>
+  return <td><BsCircleFill />{props.data.status}</td>
 }
 
+// TODO: localize column header label
 const fileTableColumnConfig: ColumnConfig<FileTableData>[] = [{
   dataKey: "name",
   displayName: "Name"
@@ -22,7 +24,8 @@ const fileTableColumnConfig: ColumnConfig<FileTableData>[] = [{
 }]
 
 const fileTableActionsConfig: ActionsConfig<FileTableData>[] = [{
-  buttonContent: <>oh hi mark</>,
+  // TODO: localize button label
+  buttonContent: <><BsDownload /> Download Selected</>,
   onClick: () => { }
 }]
 
