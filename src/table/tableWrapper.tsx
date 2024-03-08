@@ -1,49 +1,62 @@
-import { JSX, useCallback, useEffect, useState } from 'react';
-import { ActionsConfig, ColumnConfig, RowWithId } from 'table/config';
+import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
+import { ActionsConfig, ColumnConfig, DataRow } from 'table/config';
 import { TableHeader } from 'table/tableHeader';
 import { TableRow } from 'table/tableRow';
 
 
-export interface TableWrapperProps<T extends RowWithId> {
-  columnsConfig: ColumnConfig<T>[]
-  actionsConfig: ActionsConfig<T>[]
-  data: T[]
-}
+const useSelectableRows = <T extends {}>(data: T[]) => {
+  const [dataRows, setDataRows] = useState<DataRow<T>[]>([])
 
-const useSelectableRows = <T extends RowWithId>(data: T[]) => {
-  const [selectedIds, setSelectedIds] = useState<(string | number)[]>([])
-  // remove selected id if the row was removed from the source data
   useEffect(() => {
-    const ids = selectedIds.filter(id => !data.find(row => row.Id === id))
-    if (ids.length !== selectedIds.length) {
-      setSelectedIds(ids)
+    const rows = data.map((x, i) => ({ id: i, selected: false, data: x }))
+    if (!dataRows.filter(x => !x.selected).length) {
+      setDataRows(rows)
+      return
     }
+
+    // TODO: if any rows were selected we want to try and preserve the checked state
+    // Seems how the row ids are generated here and are not apart of the original source data
+    // we would need to do a reference compare between the old row data obj and the new incoming one
+    // if there is a match we could then transfer the old checked value
+    // However, right now we will lose any checked state on a data change as that is outside the requirements
+    setDataRows(rows)
+    return
   }, [data])
 
-  const handleSelectRow = useCallback((id: string | number) => {
-    if (selectedIds.includes(id)) {
-      return
+  const handleSelectRow = useCallback((id: number) => {
+    const index = dataRows.findIndex(x => x.id === id)
+    if (index >= 0) {
+      const rows = [...dataRows]
+      rows[index].selected = true
+      setDataRows(rows)
     }
-    setSelectedIds([...selectedIds, id])
-  }, [selectedIds, setSelectedIds])
+  }, [dataRows, setDataRows])
 
-  const handleUnselectRow = useCallback((id: string | number) => {
-    if (!selectedIds.includes(id)) {
-      return
+  const handleUnselectRow = useCallback((id: number) => {
+    const index = dataRows.findIndex(x => x.id === id)
+    if (index >= 0) {
+      const rows = [...dataRows]
+      rows[index].selected = false
+      setDataRows(rows)
     }
-    setSelectedIds(selectedIds.filter(x => x !== id))
-  }, [selectedIds, setSelectedIds])
+  }, [dataRows, setDataRows])
 
   const handleSelectAll = useCallback(() => {
-    setSelectedIds(data.map(x => x.Id))
-  }, [setSelectedIds])
+    setDataRows(dataRows.map(row => {
+      row.selected = true
+      return row
+    }))
+  }, [dataRows, setDataRows])
 
   const handleUnselectAll = useCallback(() => {
-    setSelectedIds([])
-  }, [setSelectedIds])
+    setDataRows(dataRows.map(row => {
+      row.selected = false
+      return row
+    }))
+  }, [dataRows, setDataRows])
 
   return {
-    selectedIds,
+    dataRows,
     handleSelectRow,
     handleUnselectRow,
     handleSelectAll,
@@ -51,26 +64,31 @@ const useSelectableRows = <T extends RowWithId>(data: T[]) => {
   }
 }
 
-export const TableWrapper = <T extends RowWithId>(props: TableWrapperProps<T>): JSX.Element => {
+export interface TableWrapperProps<T extends {}> {
+  columnsConfig: ColumnConfig<T>[]
+  actionsConfig: ActionsConfig<T>[]
+  data: T[]
+}
+
+export const TableWrapper = <T extends {}>(props: TableWrapperProps<T>): JSX.Element => {
   const {
-    selectedIds,
+    dataRows,
     handleSelectRow, handleUnselectRow,
     handleSelectAll, handleUnselectAll } = useSelectableRows(props.data)
 
   return <table>
-    <TableHeader
+    <TableHeader<T>
       actionsConfig={props.actionsConfig}
       columnsConfig={props.columnsConfig}
-      selectedData={[]}
+      dataRows={dataRows}
       onSelectAll={handleSelectAll}
       onUnselectAll={handleUnselectAll}
     />
     <tbody>
-      {props.data.map((row) => <TableRow
-        key={row.Id}
-        row={row}
+      {dataRows.map((row) => <TableRow
+        key={row.id}
+        dataRow={row}
         columnsConfig={props.columnsConfig}
-        selected={selectedIds.find(id => id === row.Id) !== undefined ? true : false}
         onSelectRow={handleSelectRow}
         onUnselectRow={handleUnselectRow}
       />)}

@@ -1,41 +1,55 @@
-import { ReactNode } from 'react';
-import { ColumnConfig, RowWithId } from 'table/config';
-import { TableHeader } from 'table/tableHeader';
+import { ReactNode, useCallback } from 'react';
+import { BsSquare, BsCheckSquareFill } from "react-icons/bs";
+
+import { ColumnConfig, DataRow } from 'table/config';
 
 interface CellProps<T> {
   columnsConfig: ColumnConfig<T>
-  row: T
+  id: number
+  data: T
 }
 
-const Cell = <T,>(props: CellProps<T>) => {
+export const Cell = <T,>(props: CellProps<T>) => {
   const key = props.columnsConfig.dataKey
   let content: ReactNode
-  if (props.columnsConfig.render) {
-    content = <props.columnsConfig.render data={props.row} />
+  if (props.columnsConfig.Render) {
+    content = <props.columnsConfig.Render data={props.data} />
   } else {
     // if the content is unsupported a render component must be provided
     // TODO: catch any errors here gracefully
     content = <td className={key.toString()}>
-      {(props.row[props.columnsConfig.dataKey] as any)}
+      {(props.data[props.columnsConfig.dataKey] as any)}
     </td>
   }
   return content
 }
 
-export interface TableRowProps<T extends RowWithId> {
+export interface TableRowProps<T extends {}> {
   columnsConfig: ColumnConfig<T>[]
-  selected: boolean
-  row: T
-  onSelectRow: (id: string | number) => void
-  onUnselectRow: (id: string | number) => void
+  dataRow: DataRow<T>
+  onSelectRow: (id: number) => void
+  onUnselectRow: (id: number) => void
 }
 
-export const TableRow = <T extends RowWithId>(props: TableRowProps<T>) => {
+export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
+  const { dataRow, onSelectRow, onUnselectRow } = props
+
+  const handleSelect = useCallback(() => {
+    props.onSelectRow(props.dataRow.id)
+  }, [onSelectRow, dataRow])
+
+  const handleUnselect = useCallback(() => {
+    props.onUnselectRow(props.dataRow.id)
+  }, [onUnselectRow, dataRow])
+
+
   return <tr>
-    {props.columnsConfig.map(x => <Cell
+    <td>{props.dataRow.selected ? <BsCheckSquareFill onClick={handleUnselect} /> : <BsSquare onClick={handleSelect} />}</td>
+    {props.columnsConfig.map(x => <Cell<T>
       key={x.dataKey.toString()}
       columnsConfig={x}
-      row={props.row}
+      data={props.dataRow.data}
+      id={props.dataRow.id}
     />)
     }
   </tr>

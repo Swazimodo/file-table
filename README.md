@@ -57,6 +57,18 @@ This component displays a list of files which can be downloaded. It should be ab
 ]
 ```
 
+## Design Considerations
+- A table is a very commonly used component so I wanted to develop it in a generic fashion
+  - Generics are used throughout to allow for any object like data to be used
+  - Allows for user provided table actions
+  - An optional render function can be set which will allow for calculated columns or custom styling
+  - *In the future it would be possible to add additional features like column sorting or user configurable columns
+- An ID is generated each row so that it can be used in event handlers. It also is used as a react key which would allow for features like table sort.
+
+## TODO
+- Add error boundary to catch any UI errors gracefully and direct them to support
+- Modal dialog should fade in and out
+
 ## Available Scripts
 
 In the project directory, you can run:

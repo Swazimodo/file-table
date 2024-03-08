@@ -20,7 +20,7 @@ const fileTableColumnConfig: ColumnConfig<FileTableData>[] = [{
 }, {
   dataKey: "status",
   displayName: "Status",
-  render: StatusCell
+  Render: StatusCell
 }]
 
 const fileTableActionsConfig: ActionsConfig<FileTableData>[] = [{
