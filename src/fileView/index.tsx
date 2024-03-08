@@ -26,7 +26,7 @@ const fileTableColumnConfig: ColumnConfig<FileTableData>[] = [{
 const fileTableActionsConfig: ActionsConfig<FileTableData>[] = [{
   // TODO: localize button label
   buttonContent: <><BsDownload /> Download Selected</>,
-  onClick: () => { }
+  onClick: (data) => { console.log(`download ${data.length} items`) }
 }]
 
 export const FileView: FC = () => {

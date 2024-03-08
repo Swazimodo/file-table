@@ -26,6 +26,8 @@ export interface TableRowProps<T extends RowWithId> {
   columnsConfig: ColumnConfig<T>[]
   selected: boolean
   row: T
+  onSelectRow: (id: string | number) => void
+  onUnselectRow: (id: string | number) => void
 }
 
 export const TableRow = <T extends RowWithId>(props: TableRowProps<T>) => {

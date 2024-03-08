@@ -4,6 +4,9 @@ import { ActionsConfig, ColumnConfig } from 'table/config';
 interface TableHeaderProps<T> {
   actionsConfig: ActionsConfig<T>[]
   columnsConfig: ColumnConfig<T>[]
+  selectedData: T[]
+  onSelectAll: () => void
+  onUnselectAll: () => void
 }
 
 const Action = <T,>(props: ActionsConfig<T>) => {
@@ -18,7 +21,7 @@ const ColumnHeader = <T,>(props: ColumnConfig<T>) => {
 export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
   return <>
     <caption>
-      <div><BsSquare /><BsDashSquareFill /><BsCheckSquareFill /># Selected</div>
+      <div><BsSquare /><BsDashSquareFill /><BsCheckSquareFill />{props.selectedData.length} Selected</div>
       {props.actionsConfig.map((x, i) => <Action key={i} {...x} />)}
     </caption>
     <thead>
