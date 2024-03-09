@@ -1,6 +1,5 @@
 import { ReactNode, useCallback } from 'react';
-import { BsSquare, BsCheckSquareFill } from "react-icons/bs";
-
+import { Box, CheckedBox } from 'table/icons';
 import { ColumnConfig, DataRow } from 'table/config';
 
 interface CellProps<T> {
@@ -44,7 +43,7 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
 
 
   return <tr>
-    <td>{props.dataRow.selected ? <BsCheckSquareFill onClick={handleUnselect} /> : <BsSquare onClick={handleSelect} />}</td>
+    <td>{props.dataRow.selected ? <CheckedBox onClick={handleUnselect} /> : <Box onClick={handleSelect} />}</td>
     {props.columnsConfig.map(x => <Cell<T>
       key={x.dataKey.toString()}
       columnsConfig={x}

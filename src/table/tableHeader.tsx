@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { BsSquare, BsDashSquareFill, BsCheckSquareFill } from "react-icons/bs";
+import styled from 'styled-components';
+import { Box, CheckedBox, PartialBox } from 'table/icons';
 import { ActionsConfig, ColumnConfig, DataRow } from 'table/config';
 
 interface ActionProps<T> extends ActionsConfig<T> {
@@ -17,7 +18,7 @@ const Action = <T,>(props: ActionProps<T>) => {
 }
 
 const ColumnHeader = <T,>(props: ColumnConfig<T>) => {
-  return <th>{props.displayName}</th>
+  return <Th className={props.dataKey.toString()}>{props.displayName}</Th>
 }
 
 interface TopSelectionControlProps<T> {
@@ -31,14 +32,17 @@ export const TopSelectionControl = <T,>(props: TopSelectionControlProps<T>) => {
   const totalNumberOfRows = props.dataRows.length
   let selectionControl
   if (selectionCount === 0) {
-    selectionControl = <BsSquare onClick={props.onSelectAll} />
+    selectionControl = <Box onClick={props.onSelectAll} />
   } else if (selectionCount !== totalNumberOfRows) {
-    selectionControl = <BsDashSquareFill onClick={props.onSelectAll} />
+    selectionControl = <PartialBox onClick={props.onSelectAll} />
   } else {
-    selectionControl = <BsCheckSquareFill onClick={props.onUnselectAll} />
+    selectionControl = <CheckedBox onClick={props.onUnselectAll} />
   }
 
-  return <div>{selectionControl}{selectionCount ? selectionCount : "None"} Selected</div>
+  return <TopSelectionControlDiv>
+    {selectionControl}
+    <div>{selectionCount ? selectionCount : "None"} Selected</div>
+  </TopSelectionControlDiv>
 }
 
 interface TableHeaderProps<T> {
@@ -53,16 +57,18 @@ interface TableHeaderProps<T> {
 export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
   return <>
     <caption>
-      <TopSelectionControl<T>
-        dataRows={props.dataRows}
-        onSelectAll={props.onSelectAll}
-        onUnselectAll={props.onUnselectAll}
-      />
-      {props.actionsConfig.map((x, i) => <Action
-        key={i}
-        dataRows={props.dataRows}
-        {...x}
-      />)}
+      <TableCaptionDiv>
+        <TopSelectionControl<T>
+          dataRows={props.dataRows}
+          onSelectAll={props.onSelectAll}
+          onUnselectAll={props.onUnselectAll}
+        />
+        {props.actionsConfig.map((x, i) => <Action
+          key={i}
+          dataRows={props.dataRows}
+          {...x}
+        />)}
+      </TableCaptionDiv>
     </caption>
     <thead>
       <tr>
@@ -72,3 +78,25 @@ export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
     </thead>
   </>
 }
+
+const Th = styled.th`
+  text-align: left;
+`
+
+const TableCaptionDiv = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 2px;
+
+  >* {
+    margin: 4px 16px 4px 4px;
+  }
+`
+
+const TopSelectionControlDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 124px;
+`

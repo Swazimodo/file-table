@@ -1,5 +1,7 @@
 import { FC } from 'react';
+import styled from 'styled-components'
 import { BsDownload, BsCircleFill } from "react-icons/bs";
+import { IconWrapper } from 'common/icon';
 import { Table, ColumnConfig, ActionsConfig } from 'table';
 import { data, FileTableData } from 'fileView/api';
 
@@ -17,7 +19,12 @@ const StatusCell = (props: StatusCellProps) => {
   // but the system value will be used to determine the styling of it
   const statusLabel = StatusLabels[props.data.status] ? StatusLabels[props.data.status] : props.data.status
   const hasGreenDot = props.data.status === 'available'
-  return < td className="status" > {hasGreenDot && <BsCircleFill />}{statusLabel}</td>
+  return <td className="status" >
+    {hasGreenDot && <IconWrapper>
+      <BsCircleFill />
+    </IconWrapper>}
+    {statusLabel}
+  </td>
 }
 
 // TODO: localize column header label
@@ -38,14 +45,34 @@ const fileTableColumnConfig: ColumnConfig<FileTableData>[] = [{
 
 const fileTableActionsConfig: ActionsConfig<FileTableData>[] = [{
   // TODO: localize button label
-  buttonContent: <><BsDownload /> Download Selected</>,
+  buttonContent: <>
+    <IconWrapper>
+      <BsDownload />
+    </IconWrapper> Download Selected
+  </>,
   onClick: (data) => { console.log(`download ${data.length} items`) }
 }]
 
 export const FileView: FC = () => {
-  return <Table<FileTableData>
-    columnsConfig={fileTableColumnConfig}
-    actionsConfig={fileTableActionsConfig}
-    data={data}
-  />
+  return <TableWrapperDiv>
+    <Table<FileTableData>
+      columnsConfig={fileTableColumnConfig}
+      actionsConfig={fileTableActionsConfig}
+      data={data}
+    />
+  </TableWrapperDiv>
 }
+
+// This table wrapper will allow us to inject any custom styles for this table here
+const TableWrapperDiv = styled.div`
+  th.status,
+  td.status {
+    padding-left: 25px
+  }
+
+  td.status svg {
+    position: relative;
+    margin-left: -20px;
+    color: #85ce75;
+  }
+`

@@ -1,4 +1,5 @@
-import { JSX, useCallback, useEffect, useMemo, useState } from 'react';
+import { JSX, useCallback, useEffect, useState } from 'react';
+import styled from 'styled-components'
 import { ActionsConfig, ColumnConfig, DataRow } from 'table/config';
 import { TableHeader } from 'table/tableHeader';
 import { TableRow } from 'table/tableRow';
@@ -65,7 +66,7 @@ export const TableWrapper = <T extends {}>(props: TableWrapperProps<T>): JSX.Ele
     handleSelectRow, handleUnselectRow,
     handleSelectAll, handleUnselectAll } = useSelectableRows(props.data)
 
-  return <table>
+  return <Table>
     <TableHeader<T>
       actionsConfig={props.actionsConfig}
       columnsConfig={props.columnsConfig}
@@ -82,5 +83,13 @@ export const TableWrapper = <T extends {}>(props: TableWrapperProps<T>): JSX.Ele
         onUnselectRow={handleUnselectRow}
       />)}
     </tbody>
-  </table>
+  </Table>
 }
+
+const Table = styled.table`
+  width: 100%;
+
+  th, td {
+    padding: 4px;
+  }
+`
