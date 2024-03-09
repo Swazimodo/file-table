@@ -1,8 +1,19 @@
+import { useCallback } from "react";
 import { BsSquare, BsDashSquareFill, BsCheckSquareFill } from "react-icons/bs";
 import { ActionsConfig, ColumnConfig, DataRow } from 'table/config';
 
-const Action = <T,>(props: ActionsConfig<T>) => {
-  return <button>{props.buttonContent}</button>
+interface ActionProps<T> extends ActionsConfig<T> {
+  dataRows: DataRow<T>[]
+}
+
+const Action = <T,>(props: ActionProps<T>) => {
+  const {
+    buttonContent,
+    dataRows,
+    onClick } = props
+  const handleClick = useCallback(() => { onClick(dataRows.filter(x => x.selected).map(x => x.data)) }, [dataRows, onClick])
+
+  return <button onClick={handleClick}>{buttonContent}</button>
 }
 
 const ColumnHeader = <T,>(props: ColumnConfig<T>) => {
@@ -47,7 +58,11 @@ export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
         onSelectAll={props.onSelectAll}
         onUnselectAll={props.onUnselectAll}
       />
-      {props.actionsConfig.map((x, i) => <Action key={i} {...x} />)}
+      {props.actionsConfig.map((x, i) => <Action
+        key={i}
+        dataRows={props.dataRows}
+        {...x}
+      />)}
     </caption>
     <thead>
       <tr>

@@ -3,8 +3,21 @@ import { BsDownload, BsCircleFill } from "react-icons/bs";
 import { Table, ColumnConfig, ActionsConfig } from 'table';
 import { data, FileTableData } from 'fileView/api';
 
-const StatusCell = (props: { data: FileTableData }) => {
-  return <td><BsCircleFill />{props.data.status}</td>
+interface StatusCellProps {
+  data: FileTableData
+}
+
+const StatusLabels: { [key: string]: string } = {
+  available: "Available",
+  scheduled: "Scheduled"
+}
+
+const StatusCell = (props: StatusCellProps) => {
+  // TODO: this status value would need to be mapped to a localized value
+  // but the system value will be used to determine the styling of it
+  const statusLabel = StatusLabels[props.data.status] ? StatusLabels[props.data.status] : props.data.status
+  const hasGreenDot = props.data.status === 'available'
+  return < td className="status" > {hasGreenDot && <BsCircleFill />}{statusLabel}</td>
 }
 
 // TODO: localize column header label
