@@ -66,8 +66,9 @@ This component displays a list of files which can be downloaded. It should be ab
 - An ID is generated each row so that it can be used in event handlers. It also is used as a react key which would allow for features like table sort.
 
 ## TODO
-- Add error boundary to catch any UI errors gracefully and direct them to support
 - Modal dialog should fade in and out
+- Localize all text in the app
+- Complete unit test coverage
 
 ## Available Scripts
 
