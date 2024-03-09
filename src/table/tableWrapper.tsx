@@ -8,19 +8,8 @@ const useSelectableRows = <T extends {}>(data: T[]) => {
   const [dataRows, setDataRows] = useState<DataRow<T>[]>([])
 
   useEffect(() => {
-    const rows = data.map((x, i) => ({ id: i, selected: false, data: x }))
-    if (!dataRows.filter(x => !x.selected).length) {
-      setDataRows(rows)
-      return
-    }
-
-    // TODO: if any rows were selected we want to try and preserve the checked state
-    // Seems how the row ids are generated here and are not apart of the original source data
-    // we would need to do a reference compare between the old row data obj and the new incoming one
-    // if there is a match we could then transfer the old checked value
-    // However, right now we will lose any checked state on a data change as that is outside the requirements
-    setDataRows(rows)
-    return
+    setDataRows(data
+      .map((x, i) => ({ id: i, selected: false, data: x })))
   }, [data])
 
   const handleSelectRow = useCallback((id: number) => {
