@@ -64,13 +64,17 @@ This component displays a list of files which can be downloaded. It should be ab
   - An optional render function can be set which will allow for calculated columns or custom styling
   - *In the future it would be possible to add additional features like column sorting or user configurable columns
 - An ID is generated each row so that it can be used in event handlers. It also is used as a react key which would allow for features like table sort.
+- The spec does not specify how the UI should handle downloading only `available` items. There are a few ways that this could be handled.
+  1. The scheduled rows could have disabled checkboxes (but that does not seem to be the case in the screenshot)
+  1. The button could be disabled if you selected items which would be invalid
+  1. The button could filter the incoming data and only act on valid rows
+  - I chose the filtering option for simplicity but I think disabling the button might give a better experience. This is an issue I would discuss with the design team before implementing in the real world. To help with the lack of user feedback on an completely invalid selection, I added a warning toast message.
 
 ## TODO
-- Modal dialog should fade in and out
 - use a theme context to standardize styling
 - Localize all text in the app
 - Complete unit test coverage
-- style toast message
+- style toast messages
 
 ## Available Scripts
 

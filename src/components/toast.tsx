@@ -9,6 +9,7 @@ export interface ToastMessage {
 
 interface TemporalToastMessage extends ToastMessage {
   shown: Date
+  id: string
 }
 
 export interface ToastContext {
@@ -44,7 +45,9 @@ const useToasts = () => {
   }, [messages, setMessageCount])
 
   const addMessage = useCallback((message: ToastMessage) => {
-    const temporalMessage = { ...message, shown: new Date() }
+    // adding the message count to the id will help generate a unique id even if two messages are added at the same time
+    const shownTime = new Date()
+    const temporalMessage = { ...message, shown: shownTime, id: shownTime.toISOString() + messages.current.length }
     messages.current = [...messages.current, temporalMessage]
     setMessageCount(messages.current.length)
     setTimeout(() => removeMessage(temporalMessage), 8000)
@@ -59,7 +62,7 @@ const useToasts = () => {
 export const ToastMessageEmitter: FC = () => {
   const { messages } = useContext(toastContext)
   return <CenterPointDiv>
-    {messages.reverse().map((m, i) => <ToastDiv role="alert" className={m.level} key={m.shown.getTime()}>
+    {messages.reverse().map((m) => <ToastDiv role="alert" className={m.level} key={m.id}>
       <div>{m.message}</div>
       {m.details && <div>{m.details}</div>}
     </ToastDiv>)}

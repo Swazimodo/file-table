@@ -32,17 +32,25 @@ export const FileView: FC = () => {
   const { addMessage } = useContext(toastContext)
 
   const handleDownload = useCallback((data: FileTableData[]) => {
-    if (!data.length) {
+    const actionableData = data.filter(x => x.status === 'available')
+    if (!actionableData.length || actionableData.length !== data.length) {
+      addMessage({
+        level: 'warning',
+        message: `Downloading is only possible on rows with a status of "${StatusLabels['available']}"`,
+      })
+    }
+    if (!actionableData.length) {
       return
     }
 
+    // implement any button logic here
     addMessage({
       level: 'info',
       message: 'Started Downloading',
-      details: data.reduce((accumulator, x) => {
+      details: actionableData.reduce((accumulator, x) => {
         accumulator += `${x.device}: ${x.path}\n`
         return accumulator
-      }, "") + "Clicking \"Download Selected\" when some or all items are displayed should generate an alert box with the path and device of all selected files."
+      }, "")
     })
   }, [addMessage])
 
