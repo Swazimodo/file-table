@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import { FC, useCallback, useContext } from 'react';
 import styled from 'styled-components'
 import { BsDownload, BsCircleFill } from "react-icons/bs";
 import { IconWrapper } from 'components/icon';
 import { Table, ColumnConfig, ActionsConfig } from 'components/table';
 import { data, FileTableData } from 'fileView/api';
+import { toastContext } from 'components/toast';
 
 interface StatusCellProps {
   data: FileTableData
@@ -27,33 +28,49 @@ const StatusCell = (props: StatusCellProps) => {
   </td>
 }
 
-// TODO: localize column header label
-const fileTableColumnConfig: ColumnConfig<FileTableData>[] = [{
-  dataKey: "name",
-  displayName: "Name"
-}, {
-  dataKey: "device",
-  displayName: "Device"
-}, {
-  dataKey: "path",
-  displayName: "Path"
-}, {
-  dataKey: "status",
-  displayName: "Status",
-  Render: StatusCell
-}]
-
-const fileTableActionsConfig: ActionsConfig<FileTableData>[] = [{
-  // TODO: localize button label
-  buttonContent: <>
-    <IconWrapper>
-      <BsDownload />
-    </IconWrapper> Download Selected
-  </>,
-  onClick: (data) => { console.log(`download ${data.length} items`) }
-}]
-
 export const FileView: FC = () => {
+  const { addMessage } = useContext(toastContext)
+
+  const handleDownload = useCallback((data: FileTableData[]) => {
+    if (!data.length) {
+      return
+    }
+
+    addMessage({
+      level: 'info',
+      message: 'Started Downloading',
+      details: data.reduce((accumulator, x) => {
+        accumulator += `${x.device}: ${x.path}\n`
+        return accumulator
+      }, "") + "Clicking \"Download Selected\" when some or all items are displayed should generate an alert box with the path and device of all selected files."
+    })
+  }, [addMessage])
+
+  // TODO: localize column header label
+  const fileTableColumnConfig: ColumnConfig<FileTableData>[] = [{
+    dataKey: "name",
+    displayName: "Name"
+  }, {
+    dataKey: "device",
+    displayName: "Device"
+  }, {
+    dataKey: "path",
+    displayName: "Path"
+  }, {
+    dataKey: "status",
+    displayName: "Status",
+    Render: StatusCell
+  }]
+  const fileTableActionsConfig: ActionsConfig<FileTableData>[] = [{
+    // TODO: localize button label
+    buttonContent: <>
+      <IconWrapper>
+        <BsDownload />
+      </IconWrapper> Download Selected
+    </>,
+    onClick: handleDownload
+  }]
+
   return <TableWrapperDiv>
     <Table<FileTableData>
       columnsConfig={fileTableColumnConfig}
@@ -74,5 +91,6 @@ const TableWrapperDiv = styled.div`
     position: relative;
     margin-left: -20px;
     color: #85ce75;
+    z-index: -1;
   }
 `

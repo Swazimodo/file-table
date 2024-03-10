@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
 
-import { ToastContextProvider, toastContext } from 'components/toast';
+import { ToastContextProvider, ToastMessageEmitter, toastContext } from 'components/toast';
 import { ErrorBoundary } from 'components/errorBoundary'
 import { FileView } from 'fileView';
 
@@ -11,6 +11,7 @@ function App() {
       <ErrorBoundary>
         <ToastContextProvider>
           <RenderWhenReady>
+            <ToastMessageEmitter />
             <FileView />
           </RenderWhenReady>
         </ToastContextProvider>

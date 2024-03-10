@@ -75,13 +75,16 @@ const CenterPointDiv = styled.div`
   justify-content: center;
 `
 const ToastDiv = styled.div`
-  width: 200px;
+  max-width: 500px;
   border: 2px solid;
 
   margin: 4px 4px 0 0;
   padding: 2px;
   display: flex;
   flex-direction: column;
+
+  white-space: pre-line;
+  z-index: 9001;
 
   &.info {
     background-color: #b8b8f5;

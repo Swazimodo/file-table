@@ -70,6 +70,7 @@ This component displays a list of files which can be downloaded. It should be ab
 - use a theme context to standardize styling
 - Localize all text in the app
 - Complete unit test coverage
+- style toast message
 
 ## Available Scripts
 
