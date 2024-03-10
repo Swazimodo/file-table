@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import styled from 'styled-components';
+import { Button } from 'components/button';
 import { Box, CheckedBox, PartialBox } from 'components/table/icons';
 import { ActionsConfig, ColumnConfig, DataRow } from 'components/table/config';
 
@@ -14,7 +15,7 @@ const Action = <T,>(props: ActionProps<T>) => {
     onClick } = props
   const handleClick = useCallback(() => { onClick(dataRows.filter(x => x.selected).map(x => x.data)) }, [dataRows, onClick])
 
-  return <button onClick={handleClick}>{buttonContent}</button>
+  return <Button onClick={handleClick}>{buttonContent}</Button>
 }
 
 const ColumnHeader = <T,>(props: ColumnConfig<T>) => {
@@ -41,7 +42,11 @@ export const TopSelectionControl = <T,>(props: TopSelectionControlProps<T>) => {
 
   return <TopSelectionControlDiv>
     {selectionControl}
-    <div>{selectionCount ? selectionCount : "None"} Selected</div>
+    <div>
+      {!selectionCount && "None "}
+      Selected
+      {!!selectionCount && ` ${selectionCount}`}
+    </div>
   </TopSelectionControlDiv>
 }
 
@@ -71,26 +76,33 @@ export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
       </TableCaptionDiv>
     </caption>
     <thead>
-      <tr>
+      <Tr>
         <th />
         {props.columnsConfig.map(x => <ColumnHeader key={x.dataKey.toString()} {...x} />)}
-      </tr>
+      </Tr>
     </thead>
   </>
 }
 
+const Tr = styled.tr`
+  border-top: rgba(0, 0, 0, .1) 1px solid;
+  border-bottom: rgba(0, 0, 0, .1) 1px solid;
+`
+
 const Th = styled.th`
   text-align: left;
+  font-weight: lighter;
+  font-size: 1.1em;
 `
 
 const TableCaptionDiv = styled.div`
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-  margin: 0 2px;
+  align-items: baseline;
+  margin: 4px 0;
 
   >* {
-    margin: 4px 16px 4px 4px;
+    margin: 4px 16px 4px 8px;
   }
 `
 
@@ -99,4 +111,8 @@ const TopSelectionControlDiv = styled.div`
   justify-content: space-between;
   align-items: center;
   min-width: 124px;
+
+  > div:first-child {
+    cursor: pointer;
+  }
 `

@@ -58,7 +58,7 @@ This component displays a list of files which can be downloaded. It should be ab
 ```
 
 ## Design Considerations
-- A table is a very commonly used component so I wanted to develop it in a generic fashion
+- A table is a very commonly used component but also fairly complex. I decided to mainly lean into this component to develop it in a generic fashion for this assignment.
   - Generics are used throughout to allow for any object like data to be used
   - Allows for user provided table actions
   - An optional render function can be set which will allow for calculated columns or custom styling
@@ -67,6 +67,7 @@ This component displays a list of files which can be downloaded. It should be ab
 
 ## TODO
 - Modal dialog should fade in and out
+- use a theme context to standardize styling
 - Localize all text in the app
 - Complete unit test coverage
 

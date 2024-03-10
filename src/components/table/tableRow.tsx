@@ -1,6 +1,7 @@
 import { ReactNode, useCallback } from 'react';
 import { Box, CheckedBox } from 'components/table/icons';
 import { ColumnConfig, DataRow } from 'components/table/config';
+import styled from 'styled-components';
 
 interface CellProps<T> {
   columnsConfig: ColumnConfig<T>
@@ -42,8 +43,8 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
   }, [onUnselectRow, dataRow])
 
 
-  return <tr>
-    <td>{props.dataRow.selected ? <CheckedBox onClick={handleUnselect} /> : <Box onClick={handleSelect} />}</td>
+  return <Tr className={props.dataRow.selected ? 'selected' : undefined}>
+    <Td>{props.dataRow.selected ? <CheckedBox onClick={handleUnselect} /> : <Box onClick={handleSelect} />}</Td>
     {props.columnsConfig.map(x => <Cell<T>
       key={x.dataKey.toString()}
       columnsConfig={x}
@@ -51,5 +52,29 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
       id={props.dataRow.id}
     />)
     }
-  </tr>
+  </Tr>
 }
+
+const Tr = styled.tr`
+  border-bottom: rgba(0, 0, 0, .1) 1px solid;
+
+  >td:not(:first-child) {
+    font-size: .8em;
+  }
+
+  &.selected {
+    background: rgba(0, 0, 0, .1);
+  }
+  &:hover {
+    background: rgba(0, 0, 0, .05);
+  }
+  &.selected:hover {
+    background: rgba(0, 0, 0, .15);
+  }
+`
+
+const Td = styled.td`
+  > div {
+    cursor: pointer;
+  }
+`

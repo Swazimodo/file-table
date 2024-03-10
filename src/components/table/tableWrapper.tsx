@@ -88,8 +88,9 @@ export const TableWrapper = <T extends {}>(props: TableWrapperProps<T>): JSX.Ele
 
 const Table = styled.table`
   width: 100%;
+  border-collapse: collapse;
 
   th, td {
-    padding: 4px;
+    padding: 8px;
   }
 `
