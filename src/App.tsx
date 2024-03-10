@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 
-import { ToastContextProvider, toastContext } from 'common/toast';
-import { ErrorBoundary } from 'common/errorBoundary'
+import { ToastContextProvider, toastContext } from 'components/toast';
+import { ErrorBoundary } from 'components/errorBoundary'
 import { FileView } from 'fileView';
 
 

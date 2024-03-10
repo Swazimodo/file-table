@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import styled from 'styled-components'
 import { BsDownload, BsCircleFill } from "react-icons/bs";
-import { IconWrapper } from 'common/icon';
-import { Table, ColumnConfig, ActionsConfig } from 'table';
+import { IconWrapper } from 'components/icon';
+import { Table, ColumnConfig, ActionsConfig } from 'components/table';
 import { data, FileTableData } from 'fileView/api';
 
 interface StatusCellProps {

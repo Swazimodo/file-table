@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import styled from 'styled-components';
-import { Box, CheckedBox, PartialBox } from 'table/icons';
-import { ActionsConfig, ColumnConfig, DataRow } from 'table/config';
+import { Box, CheckedBox, PartialBox } from 'components/table/icons';
+import { ActionsConfig, ColumnConfig, DataRow } from 'components/table/config';
 
 interface ActionProps<T> extends ActionsConfig<T> {
   dataRows: DataRow<T>[]

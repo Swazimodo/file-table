@@ -1,5 +1,5 @@
 import { BsSquare, BsDashSquareFill, BsCheckSquareFill } from "react-icons/bs";
-import { IconWrapper, Clickable } from 'common/icon';
+import { IconWrapper, Clickable } from 'components/icon';
 
 export const Box = (props: Clickable) => {
   return <IconWrapper onClick={props.onClick}>

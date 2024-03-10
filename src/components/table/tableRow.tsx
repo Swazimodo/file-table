@@ -1,6 +1,6 @@
 import { ReactNode, useCallback } from 'react';
-import { Box, CheckedBox } from 'table/icons';
-import { ColumnConfig, DataRow } from 'table/config';
+import { Box, CheckedBox } from 'components/table/icons';
+import { ColumnConfig, DataRow } from 'components/table/config';
 
 interface CellProps<T> {
   columnsConfig: ColumnConfig<T>

@@ -1,8 +1,8 @@
 import { JSX, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components'
-import { ActionsConfig, ColumnConfig, DataRow } from 'table/config';
-import { TableHeader } from 'table/tableHeader';
-import { TableRow } from 'table/tableRow';
+import { ActionsConfig, ColumnConfig, DataRow } from 'components/table/config';
+import { TableHeader } from 'components/table/tableHeader';
+import { TableRow } from 'components/table/tableRow';
 
 
 const useSelectableRows = <T extends {}>(data: T[]) => {
