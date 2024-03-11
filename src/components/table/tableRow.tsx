@@ -5,7 +5,6 @@ import styled from 'styled-components';
 
 interface CellProps<T> {
   columnsConfig: ColumnConfig<T>
-  id: number
   data: T
 }
 
@@ -49,7 +48,6 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
       key={x.dataKey.toString()}
       columnsConfig={x}
       data={props.dataRow.data}
-      id={props.dataRow.id}
     />)
     }
   </Tr>
