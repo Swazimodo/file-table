@@ -43,10 +43,11 @@ export interface TableRowProps<T extends {}> {
   dataRow: DataRow<T>
   onSelectRow: (id: number) => void
   onUnselectRow: (id: number) => void
+  tabIndex: number
 }
 
 export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
-  const { dataRow, onSelectRow, onUnselectRow } = props
+  const { dataRow, onSelectRow, onUnselectRow, tabIndex } = props
 
   const handleSelect = useCallback(() => {
     props.onSelectRow(props.dataRow.id)
@@ -67,7 +68,7 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
     dataCells = <td className='grouped-cells'>{dataCells}</td>
   }
 
-  return <Tr className={props.dataRow.selected ? 'selected' : undefined}>
+  return <Tr className={props.dataRow.selected ? 'selected' : undefined} tabIndex={tabIndex}>
     <Td className='selector'>
       {props.dataRow.selected ?
         <CheckedBox onClick={handleUnselect} />

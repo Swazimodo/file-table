@@ -3,10 +3,11 @@ import styled from 'styled-components';
 export interface Clickable {
   children?: React.ReactNode
   onClick?: () => void
+  tabIndex?: number
 }
 
 export const IconWrapper = (props: Clickable) => {
-  return <SvgWrapperDiv onClick={props.onClick}>
+  return <SvgWrapperDiv onClick={props.onClick} tabIndex={props.tabIndex}>
     {props.children}
   </SvgWrapperDiv>
 }

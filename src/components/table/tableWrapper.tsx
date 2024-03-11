@@ -59,9 +59,11 @@ export interface TableWrapperProps<T extends {}> {
   columnsConfig: ColumnConfig<T>[]
   actionsConfig: ActionsConfig<T>[]
   data: T[]
+  tabIndex?: number
 }
 
 export const TableWrapper = <T extends {}>(props: TableWrapperProps<T>): JSX.Element => {
+  const tabIndexOffset = props.tabIndex ? props.tabIndex : 1
   const {
     dataRows,
     handleSelectRow, handleUnselectRow,
@@ -74,14 +76,16 @@ export const TableWrapper = <T extends {}>(props: TableWrapperProps<T>): JSX.Ele
       dataRows={dataRows}
       onSelectAll={handleSelectAll}
       onUnselectAll={handleUnselectAll}
+      tabIndex={tabIndexOffset}
     />
     <tbody>
-      {dataRows.map((row) => <TableRow
+      {dataRows.map((row, i) => <TableRow
         key={row.id}
         dataRow={row}
         columnsConfig={props.columnsConfig}
         onSelectRow={handleSelectRow}
         onUnselectRow={handleUnselectRow}
+        tabIndex={tabIndexOffset + props.actionsConfig.length + i}
       />)}
     </tbody>
   </Table>

@@ -7,16 +7,14 @@ import { MediaSizes, useMediaQuery } from "components/mediaQueries";
 
 interface ActionProps<T> extends ActionsConfig<T> {
   dataRows: DataRow<T>[]
+  tabIndex: number
 }
 
 const Action = <T,>(props: ActionProps<T>) => {
-  const {
-    buttonContent,
-    dataRows,
-    onClick } = props
+  const { buttonContent, dataRows, onClick, tabIndex } = props
   const handleClick = useCallback(() => { onClick(dataRows.filter(x => x.selected).map(x => x.data)) }, [dataRows, onClick])
 
-  return <Button onClick={handleClick}>{buttonContent}</Button>
+  return <Button onClick={handleClick} tabIndex={tabIndex}>{buttonContent}</Button>
 }
 
 const ColumnHeader = <T,>(props: ColumnConfig<T>) => {
@@ -27,6 +25,7 @@ interface TopSelectionControlProps<T> {
   dataRows: DataRow<T>[]
   onSelectAll: () => void
   onUnselectAll: () => void
+  tabIndex: number
 }
 
 export const TopSelectionControl = <T,>(props: TopSelectionControlProps<T>) => {
@@ -34,11 +33,11 @@ export const TopSelectionControl = <T,>(props: TopSelectionControlProps<T>) => {
   const totalNumberOfRows = props.dataRows.length
   let selectionControl
   if (selectionCount === 0) {
-    selectionControl = <Box onClick={props.onSelectAll} />
+    selectionControl = <Box onClick={props.onSelectAll} tabIndex={props.tabIndex} />
   } else if (selectionCount !== totalNumberOfRows) {
-    selectionControl = <PartialBox onClick={props.onSelectAll} />
+    selectionControl = <PartialBox onClick={props.onSelectAll} tabIndex={props.tabIndex} />
   } else {
-    selectionControl = <CheckedBox onClick={props.onUnselectAll} />
+    selectionControl = <CheckedBox onClick={props.onUnselectAll} tabIndex={props.tabIndex} />
   }
 
   return <TopSelectionControlDiv>
@@ -57,6 +56,7 @@ interface TableHeaderProps<T> {
   dataRows: DataRow<T>[]
   onSelectAll: () => void
   onUnselectAll: () => void
+  tabIndex: number
 }
 
 // TODO: localize `# Selected` label
@@ -70,11 +70,13 @@ export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
           dataRows={props.dataRows}
           onSelectAll={props.onSelectAll}
           onUnselectAll={props.onUnselectAll}
+          tabIndex={props.tabIndex}
         />
-        {props.actionsConfig.map((x, i) => <Action
+        {props.actionsConfig.map((action, i) => <Action
           key={i}
           dataRows={props.dataRows}
-          {...x}
+          tabIndex={props.tabIndex + 1 + i}
+          {...action}
         />)}
       </TableCaptionDiv>
     </caption>

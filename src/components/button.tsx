@@ -1,15 +1,14 @@
 import styled from 'styled-components';
 
 // TODO: this component should have some type of a button style property and consume a theme context
-export interface ButtonProps {
+export interface ButtonProps extends React.DetailedHTMLProps<React.ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
   children?: React.ReactNode
-  onClick?: () => void
 }
 
 export const Button = (props: ButtonProps) => {
-  const { children, onClick } = props
+  const { children, onClick, ...prop } = props
 
-  return <TextButton onClick={onClick}>
+  return <TextButton onClick={onClick} {...prop}>
     {children}
   </TextButton>
 }

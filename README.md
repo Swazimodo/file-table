@@ -82,7 +82,7 @@ This component displays a list of files which can be downloaded. It should be ab
 - make app accessible for screen readers
   - I did not have software setup to test this so I didn't focus at all here. Normally this is something I would test and ensure that a screen reader will give you the context for the interactive elements as you move through the app. This is really important for tables because they are data dense and can expose a lot of functionality.
 - make app accessible for keyboard only access
-  - I'm using an icon for checkboxes but that is not and interactive element for a keyboard. It should be possible to tab through the app and interact with all input elements using the keyboard.
+  - I'm using an icon for checkboxes but that is not and interactive element for a keyboard. It should be possible to tab through the app and interact with all input elements using the keyboard. I ran out of time to make an accessible tri state checkbox.
 
 ## Available Scripts
 

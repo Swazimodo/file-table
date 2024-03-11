@@ -111,6 +111,7 @@ test('renderUnselectedTableRow_clickCheckBox_ShouldCallOnSelectRow', () => {
       dataRow={dataRow}
       onSelectRow={handleSelectRow}
       onUnselectRow={handleUnselectRow}
+      tabIndex={0}
     />
   </tbody></table>);
 
@@ -140,6 +141,7 @@ test('renderSelectedTableRow_clickCheckBox_ShouldCallOnUnselectRow', () => {
       dataRow={dataRow}
       onSelectRow={handleSelectRow}
       onUnselectRow={handleUnselectRow}
+      tabIndex={0}
     />
   </tbody></table>);
 

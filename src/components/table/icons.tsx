@@ -1,20 +1,24 @@
 import { BsSquare, BsDashSquareFill, BsCheckSquareFill } from "react-icons/bs";
 import { IconWrapper, Clickable } from 'components/icon';
 
-export const Box = (props: Clickable) => {
-  return <IconWrapper onClick={props.onClick}>
+interface BoxProps extends Clickable {
+  tabIndex?: number
+}
+
+export const Box = (props: BoxProps) => {
+  return <IconWrapper {...props}>
     <BsSquare />
   </IconWrapper>
 }
 
-export const PartialBox = (props: Clickable) => {
-  return <IconWrapper onClick={props.onClick}>
+export const PartialBox = (props: BoxProps) => {
+  return <IconWrapper {...props}>
     <BsDashSquareFill className='primary' />
   </IconWrapper>
 }
 
-export const CheckedBox = (props: Clickable) => {
-  return <IconWrapper onClick={props.onClick}>
+export const CheckedBox = (props: BoxProps) => {
+  return <IconWrapper {...props}>
     <BsCheckSquareFill className='primary' />
   </IconWrapper>
 }
