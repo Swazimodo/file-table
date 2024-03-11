@@ -79,7 +79,9 @@ const CenterPointDiv = styled.div`
 `
 const ToastDiv = styled.div`
   max-width: 500px;
-  border: 2px solid;
+  border: 1px solid;
+  border-radius: 2px;
+  box-shadow: 1px 1px 2px;
 
   margin: 4px 4px 0 0;
   padding: 2px;
@@ -92,13 +94,20 @@ const ToastDiv = styled.div`
   &.info {
     background-color: #b8b8f5;
     border-color: #2323ac;
+    color: #2323ac;
   }
   &.warning {
     background-color: #ffd382;
     border-color: #ffa500;
+    color: #ffa500;
   }
   &.error {
     background-color: #f58383;
     border-color: #9c0505;
+    color: #9c0505;
+  }
+
+  >* {
+    color: black;
   }
 `
