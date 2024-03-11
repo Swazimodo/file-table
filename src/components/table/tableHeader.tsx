@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'components/button';
 import { Box, CheckedBox, PartialBox } from 'components/table/icons';
 import { ActionsConfig, ColumnConfig, DataRow } from 'components/table/config';
+import { MediaSizes, getMaxWidthQuery } from "components/mediaQueries";
 
 interface ActionProps<T> extends ActionsConfig<T> {
   dataRows: DataRow<T>[]
@@ -75,18 +76,21 @@ export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
         />)}
       </TableCaptionDiv>
     </caption>
-    <thead>
-      <Tr>
+    <THead>
+      <tr>
         <th />
         {props.columnsConfig.map(x => <ColumnHeader key={x.dataKey.toString()} {...x} />)}
-      </Tr>
-    </thead>
+      </tr>
+    </THead>
   </>
 }
 
-const Tr = styled.tr`
-  border-top: rgba(0, 0, 0, .1) 1px solid;
+const THead = styled.thead`
   border-bottom: rgba(0, 0, 0, .1) 1px solid;
+
+  @media ${getMaxWidthQuery(MediaSizes.md)} {
+    display: none;
+  }
 `
 
 const Th = styled.th`
@@ -99,7 +103,8 @@ const TableCaptionDiv = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: baseline;
-  margin: 4px 0;
+  padding: 4px 0;
+  border-bottom: rgba(0, 0, 0, .1) 1px solid;
 
   >* {
     margin: 4px 16px 4px 8px;

@@ -5,6 +5,7 @@ import { IconWrapper } from 'components/icon';
 import { Table, ColumnConfig, ActionsConfig } from 'components/table';
 import { data, FileTableData } from 'fileView/api';
 import { toastContext } from 'components/toast';
+import { MediaSizes, getMaxWidthQuery, getMinWidthQuery } from 'components/mediaQueries';
 
 interface StatusCellProps {
   data: FileTableData
@@ -20,12 +21,12 @@ const StatusCell = (props: StatusCellProps) => {
   // but the system value will be used to determine the styling of it
   const statusLabel = StatusLabels[props.data.status] ? StatusLabels[props.data.status] : props.data.status
   const hasGreenDot = props.data.status === 'available'
-  return <td className="status" >
+  return <StatusCellDiv>
     {hasGreenDot && <IconWrapper>
       <BsCircleFill />
     </IconWrapper>}
     {statusLabel}
-  </td>
+  </StatusCellDiv>
 }
 
 export const FileView: FC = () => {
@@ -88,17 +89,33 @@ export const FileView: FC = () => {
   </TableWrapperDiv>
 }
 
+const StatusCellDiv = styled.div`
+  svg {
+    color: #85ce75;
+  }
+
+  @media ${getMinWidthQuery(MediaSizes.md)} {
+    svg {
+      position: relative;
+      margin-left: -20px;
+      z-index: -1;
+    }
+  }
+
+  @media ${getMaxWidthQuery(MediaSizes.md)} {
+    display: flex;
+    flex-direction: row-reverse;
+
+    svg {
+      padding-left: 8px;
+    }
+  }
+`
+
 // This table wrapper will allow us to inject any custom styles for this table here
 const TableWrapperDiv = styled.div`
   th.status,
   td.status {
-    padding-left: 25px
-  }
-
-  td.status svg {
-    position: relative;
-    margin-left: -20px;
-    color: #85ce75;
-    z-index: -1;
+    padding-left: 25px;
   }
 `

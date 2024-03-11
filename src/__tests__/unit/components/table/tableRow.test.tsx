@@ -2,6 +2,14 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { ColumnConfig, DataRow } from 'components/table/config'
 import { Cell, TableRow } from 'components/table/tableRow'
 
+jest.mock('components/mediaQueries', () => ({
+  ...jest.requireActual('components/mediaQueries'),
+  useMediaQuery: () => ({
+    matchesDown: false,
+    matchesUp: true
+  })
+}))
+
 test('renderCell_withDataKey_shouldRenderValueOfThatKey', () => {
   const data = {
     foo: "bar"
@@ -15,6 +23,7 @@ test('renderCell_withDataKey_shouldRenderValueOfThatKey', () => {
     <Cell
       columnsConfig={columnConfig}
       data={data}
+      grouped={false}
     />
   </tr></tbody></table>);
 
@@ -34,6 +43,7 @@ test('renderCell_withDataKey_shouldSetDataKeyAsClass', () => {
     <Cell
       columnsConfig={columnConfig}
       data={data}
+      grouped={false}
     />
   </tr></tbody></table>);
 
@@ -55,6 +65,7 @@ test('renderCell_withInvalidDataValue_shouldThrowError', () => {
     <Cell
       columnsConfig={columnConfig}
       data={data}
+      grouped={false}
     />
   </tr></tbody></table>)
 
@@ -68,13 +79,14 @@ test('renderCell_withCustomRendererFuncComponent_shouldUseOverride', () => {
   const columnConfig: ColumnConfig<typeof data> = {
     dataKey: "foo",
     displayName: "Foo",
-    Render: (props) => <td>{props.data.foo.bar}</td>
+    Render: (props) => <div>{props.data.foo.bar}</div>
   }
 
   render(<table><tbody><tr>
     <Cell
       columnsConfig={columnConfig}
       data={data}
+      grouped={false}
     />
   </tr></tbody></table>);
 

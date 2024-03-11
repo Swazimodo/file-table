@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ActionsConfig, ColumnConfig, DataRow } from 'components/table/config';
 import { TableHeader } from 'components/table/tableHeader';
 import { TableRow } from 'components/table/tableRow';
+import { MediaSizes, getMaxWidthQuery } from 'components/mediaQueries';
 
 
 const useSelectableRows = <T extends {}>(data: T[]) => {
@@ -92,5 +93,10 @@ const Table = styled.table`
 
   th, td {
     padding: 8px;
+  }
+
+  @media ${getMaxWidthQuery(MediaSizes.md)} {
+    display: flex;
+    flex-direction: column;
   }
 `

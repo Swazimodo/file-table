@@ -2,10 +2,17 @@ import { ReactNode, useCallback } from 'react';
 import { Box, CheckedBox } from 'components/table/icons';
 import { ColumnConfig, DataRow } from 'components/table/config';
 import styled from 'styled-components';
+import { MediaSizes, getMaxWidthQuery, useMediaQuery } from 'components/mediaQueries';
 
 interface CellProps<T> {
   columnsConfig: ColumnConfig<T>
   data: T
+
+  /**
+   * If the cell is going to be grouped together with other cells then it will be wrapped with a `div` instead of `td`.
+   * Grouped cells will also include the data label to assist with a card layout.
+   */
+  grouped: boolean
 }
 
 export const Cell = <T,>(props: CellProps<T>) => {
@@ -16,10 +23,18 @@ export const Cell = <T,>(props: CellProps<T>) => {
   } else {
     // if the content is unsupported a render component must be provided
     // TODO: catch any errors here gracefully
-    content = <td className={key.toString()}>
-      {(props.data[props.columnsConfig.dataKey] as any)}
-    </td>
+    content = (props.data[props.columnsConfig.dataKey] as any)
   }
+
+  if (!props.grouped) {
+    content = <td className={key.toString()}>{content}</td>
+  } else {
+    content = <GroupedCellDiv className={key.toString()}>
+      <div className='label'>{props.columnsConfig.displayName}: </div>
+      <div className='value'>{content}</div>
+    </GroupedCellDiv>
+  }
+
   return content
 }
 
@@ -41,6 +56,16 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
     props.onUnselectRow(props.dataRow.id)
   }, [onUnselectRow, dataRow])
 
+  const mediaQuery = useMediaQuery(MediaSizes.md)
+  let dataCells: ReactNode = props.columnsConfig.map(x => <Cell<T>
+    key={x.dataKey.toString()}
+    columnsConfig={x}
+    data={props.dataRow.data}
+    grouped={mediaQuery.matchesDown}
+  />)
+  if (mediaQuery.matchesDown) {
+    dataCells = <td className='grouped-cells'>{dataCells}</td>
+  }
 
   return <Tr className={props.dataRow.selected ? 'selected' : undefined}>
     <Td className='selector'>
@@ -49,14 +74,18 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
         :
         <Box onClick={handleSelect} />}
     </Td>
-    {props.columnsConfig.map(x => <Cell<T>
-      key={x.dataKey.toString()}
-      columnsConfig={x}
-      data={props.dataRow.data}
-    />)
-    }
+    {dataCells}
   </Tr>
 }
+
+const GroupedCellDiv = styled.div`
+  > div {
+    display: inline-block;
+  }
+  > div.label {
+    min-width: 64px;
+  }
+`
 
 const Tr = styled.tr`
   border-bottom: rgba(0, 0, 0, .1) 1px solid;
@@ -73,6 +102,10 @@ const Tr = styled.tr`
   }
   &.selected:hover {
     background: rgba(0, 0, 0, .15);
+  }
+
+  @media ${getMaxWidthQuery(MediaSizes.md)} {
+    display: flex;
   }
 `
 
