@@ -69,14 +69,20 @@ This component displays a list of files which can be downloaded. It should be ab
   1. The button could be disabled if you selected items which would be invalid
   1. The button could filter the incoming data and only act on valid rows
   - I chose the filtering option for simplicity but I think disabling the button might give a better experience. This is an issue I would discuss with the design team before implementing in the real world. To help with the lack of user feedback on my chosen approach, I added a warning toast message.
+- I used a toast message for the download alert but it would have probably been better to use a modal or an alert box above or below the download button. Toast messages here were not idea because the content was too wide. Also if you wanted to show a progress bar or spinner, that type of interaction should not be in a toast.
+
 
 ## TODO
 - use a theme context to standardize styling. This would enable rolling out features like dark mode in the future more seamlessly
+  - global color pallet which would make it easier to switch between light and dark mode
+  - standard sizing increments: 2,4,8,...
 - Complete unit test coverage
-- style toast messages
-- Localize all text in the app
+  - using hooks I'm able to break up state logic from render logic as can be seen in `tableWrapper.tsx`. This allows you a lot more freedom in testing these two components. You can easily mock any state condition for UI testing. You can also test the state logic directly without any dom scraping.
+- Localize all text in the app. There are scattered TODOs for the areas that this needs to be completed.
 - make app accessible for screen readers
+  - I did not have software setup to test this so I didn't focus at all here. Normally this is something I would test and ensure that a screen reader will give you the context for the interactive elements as you move through the app. This is really important for tables because they are data dense and can expose a lot of functionality.
 - make app accessible for keyboard only access
+  - I'm using an icon for checkboxes but that is not and interactive element for a keyboard. It should be possible to tab through the app and interact with all input elements using the keyboard.
 
 ## Available Scripts
 

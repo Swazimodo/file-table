@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Button } from 'components/button';
 import { Box, CheckedBox, PartialBox } from 'components/table/icons';
 import { ActionsConfig, ColumnConfig, DataRow } from 'components/table/config';
-import { MediaSizes, getMaxWidthQuery } from "components/mediaQueries";
+import { MediaSizes, useMediaQuery } from "components/mediaQueries";
 
 interface ActionProps<T> extends ActionsConfig<T> {
   dataRows: DataRow<T>[]
@@ -61,6 +61,8 @@ interface TableHeaderProps<T> {
 
 // TODO: localize `# Selected` label
 export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
+  const mediaQuery = useMediaQuery(MediaSizes.md)
+
   return <>
     <caption>
       <TableCaptionDiv>
@@ -76,21 +78,17 @@ export const TableHeader = <T,>(props: TableHeaderProps<T>) => {
         />)}
       </TableCaptionDiv>
     </caption>
-    <THead>
+    {!mediaQuery.matchesDown && <THead>
       <tr>
         <th />
         {props.columnsConfig.map(x => <ColumnHeader key={x.dataKey.toString()} {...x} />)}
       </tr>
-    </THead>
+    </THead>}
   </>
 }
 
 const THead = styled.thead`
   border-bottom: rgba(0, 0, 0, .1) 1px solid;
-
-  @media ${getMaxWidthQuery(MediaSizes.md)} {
-    display: none;
-  }
 `
 
 const Th = styled.th`
