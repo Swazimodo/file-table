@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import { ColumnConfig } from 'components/table/config'
+import { fireEvent, render, screen } from '@testing-library/react';
+import { ColumnConfig, DataRow } from 'components/table/config'
 import { Cell, TableRow } from 'components/table/tableRow'
 
 test('renderCell_withDataKey_shouldRenderValueOfThatKey', () => {
@@ -59,4 +59,82 @@ test('renderCell_withInvalidDataValue_shouldThrowError', () => {
   </tr></tbody></table>)
 
   expect(renderCall).toThrowError()
+});
+
+test('renderCell_withCustomRendererFuncComponent_shouldUseOverride', () => {
+  const data = {
+    foo: { bar: "baz" }
+  }
+  const columnConfig: ColumnConfig<typeof data> = {
+    dataKey: "foo",
+    displayName: "Foo",
+    Render: (props) => <td>{props.data.foo.bar}</td>
+  }
+
+  render(<table><tbody><tr>
+    <Cell
+      columnsConfig={columnConfig}
+      data={data}
+    />
+  </tr></tbody></table>);
+
+  expect(screen.getByText(data.foo.bar)).toBeInTheDocument()
+});
+
+test('renderUnselectedTableRow_clickCheckBox_ShouldCallOnSelectRow', () => {
+  const dataRow: DataRow<any> = {
+    id: 5,
+    selected: false,
+    data: { foo: "bar" }
+  }
+  const columnsConfig: ColumnConfig<typeof dataRow.data>[] = [{
+    dataKey: "foo",
+    displayName: "Foo"
+  }]
+  const handleSelectRow = jest.fn()
+  const handleUnselectRow = jest.fn()
+  const { container } = render(<table><tbody>
+    <TableRow
+      columnsConfig={columnsConfig}
+      dataRow={dataRow}
+      onSelectRow={handleSelectRow}
+      onUnselectRow={handleUnselectRow}
+    />
+  </tbody></table>);
+
+  const checkbox = container.getElementsByClassName('selector')[0].firstChild
+  fireEvent.click(checkbox!)
+
+  expect(handleSelectRow).toBeCalledTimes(1)
+  expect(handleSelectRow).toBeCalledWith(dataRow.id)
+  expect(handleUnselectRow).not.toBeCalled()
+});
+
+test('renderSelectedTableRow_clickCheckBox_ShouldCallOnUnselectRow', () => {
+  const dataRow: DataRow<any> = {
+    id: 5,
+    selected: true,
+    data: { foo: "bar" }
+  }
+  const columnsConfig: ColumnConfig<typeof dataRow.data>[] = [{
+    dataKey: "foo",
+    displayName: "Foo"
+  }]
+  const handleSelectRow = jest.fn()
+  const handleUnselectRow = jest.fn()
+  const { container } = render(<table><tbody>
+    <TableRow
+      columnsConfig={columnsConfig}
+      dataRow={dataRow}
+      onSelectRow={handleSelectRow}
+      onUnselectRow={handleUnselectRow}
+    />
+  </tbody></table>);
+
+  const checkbox = container.getElementsByClassName('selector')[0].firstChild
+  fireEvent.click(checkbox!)
+
+  expect(handleUnselectRow).toBeCalledTimes(1)
+  expect(handleUnselectRow).toBeCalledWith(dataRow.id)
+  expect(handleSelectRow).not.toBeCalled()
 });

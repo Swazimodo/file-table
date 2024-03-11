@@ -58,23 +58,25 @@ This component displays a list of files which can be downloaded. It should be ab
 ```
 
 ## Design Considerations
-- A table is a very commonly used component but also fairly complex. I decided to mainly lean into this component to develop it in a generic fashion for this assignment.
+- A generic table is a very commonly used component but also fairly complex. I decided to mainly lean into this component for this assignment.
   - Generics are used throughout to allow for any object like data to be used
   - Allows for user provided table actions
   - An optional render function can be set which will allow for calculated columns or custom styling
   - *In the future it would be possible to add additional features like column sorting or user configurable columns
 - An ID is generated each row so that it can be used in event handlers. It also is used as a react key which would allow for features like table sort.
-- The spec does not specify how the UI should handle downloading only `available` items. There are a few ways that this could be handled.
+- The design does not specify how the UI should handle downloading only `available` items. There are a few ways that this could be handled.
   1. The scheduled rows could have disabled checkboxes (but that does not seem to be the case in the screenshot)
   1. The button could be disabled if you selected items which would be invalid
   1. The button could filter the incoming data and only act on valid rows
-  - I chose the filtering option for simplicity but I think disabling the button might give a better experience. This is an issue I would discuss with the design team before implementing in the real world. To help with the lack of user feedback on an completely invalid selection, I added a warning toast message.
+  - I chose the filtering option for simplicity but I think disabling the button might give a better experience. This is an issue I would discuss with the design team before implementing in the real world. To help with the lack of user feedback on my chosen approach, I added a warning toast message.
 
 ## TODO
-- use a theme context to standardize styling
-- Localize all text in the app
+- use a theme context to standardize styling. This would enable rolling out features like dark mode in the future more seamlessly
 - Complete unit test coverage
 - style toast messages
+- Localize all text in the app
+- make app accessible for screen readers
+- make app accessible for keyboard only access
 
 ## Available Scripts
 

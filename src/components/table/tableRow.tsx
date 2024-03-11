@@ -43,7 +43,12 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
 
 
   return <Tr className={props.dataRow.selected ? 'selected' : undefined}>
-    <Td>{props.dataRow.selected ? <CheckedBox onClick={handleUnselect} /> : <Box onClick={handleSelect} />}</Td>
+    <Td className='selector'>
+      {props.dataRow.selected ?
+        <CheckedBox onClick={handleUnselect} />
+        :
+        <Box onClick={handleSelect} />}
+    </Td>
     {props.columnsConfig.map(x => <Cell<T>
       key={x.dataKey.toString()}
       columnsConfig={x}
