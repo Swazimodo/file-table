@@ -50,11 +50,11 @@ export const TableRow = <T extends {}>(props: TableRowProps<T>) => {
   const { dataRow, onSelectRow, onUnselectRow, tabIndex } = props
 
   const handleSelect = useCallback(() => {
-    props.onSelectRow(props.dataRow.id)
+    onSelectRow(dataRow.id)
   }, [onSelectRow, dataRow])
 
   const handleUnselect = useCallback(() => {
-    props.onUnselectRow(props.dataRow.id)
+    onUnselectRow(dataRow.id)
   }, [onUnselectRow, dataRow])
 
   const mediaQuery = useMediaQuery(MediaSizes.md)
